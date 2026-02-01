@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
 public class ExamplePlugin extends JavaPlugin {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+    private Wire wireBlock;
 
     public ExamplePlugin(JavaPluginInit init) {
         super(init);
@@ -15,5 +16,14 @@ public class ExamplePlugin extends JavaPlugin {
     @Override
     protected void setup() {
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
+        
+        // Initialize wire block handler
+        wireBlock = new Wire();
+        LOGGER.atInfo().log("Wire block system initialized");
+        
+        // TODO: Register wire block event listeners
+        // - Block place events
+        // - Block break events
+        // - Neighbor update events
     }
 }
