@@ -2,6 +2,11 @@ package com.example.exampleplugin;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.block.BlockState;
+import com.hypixel.hytale.server.core.event.EventHandler;
+import com.hypixel.hytale.server.core.event.Listener;
+import com.hypixel.hytale.server.core.event.block.BlockBreakEvent;
+import com.hypixel.hytale.server.core.event.block.BlockPlaceEvent;
+import com.hypixel.hytale.server.core.event.block.BlockUpdateEvent;
 import com.hypixel.hytale.server.core.world.World;
 import com.hypixel.hytale.server.core.world.position.BlockPosition;
 
@@ -11,7 +16,7 @@ import java.util.*;
  * Wire block implementation - functions like Minecraft redstone
  * Handles signal propagation, connections, and power distribution
  */
-public class Wire {
+public class Wire implements Listener {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     
     // Maximum signal strength (like redstone: 15)
@@ -25,8 +30,8 @@ public class Wire {
      */
     public int getPowerLevel(World world, BlockPosition pos) {
         BlockState state = world.getBlockState(pos);
-        // TODO: Retrieve power level from block state properties
-        return 0;
+        if (state == null) return 0;
+        return state.getProperty("power").map(p -> Integer.parseInt(p.toString())).orElse(0);
     }
     
     /**
@@ -36,8 +41,11 @@ public class Wire {
         if (power < 0) power = 0;
         if (power > MAX_SIGNAL_STRENGTH) power = MAX_SIGNAL_STRENGTH;
         
-        // TODO: Update block state with new power level
-        LOGGER.atDebug().log("Setting wire power at %s to %d", pos, power);
+        BlockState state = world.getBlockState(pos);
+        if (state != null && isWireBlock(state)) {
+            world.setBlockState(pos, state.withProperty("power", String.valueOf(power)));
+        }
+        LOGGER.atInfo().log("Setting wire power at %s to %d", pos, power);
     }
     
     /**
@@ -82,14 +90,18 @@ public class Wire {
      */
     private int getReceivedPower(World world, BlockPosition pos) {
         BlockState state = world.getBlockState(pos);
+        if (state == null) return 0;
         
         // Check if it's another wire block
         if (isWireBlock(state)) {
             return getPowerLevel(world, pos);
         }
         
-        // Check if it's a power source (redstone torch, button, etc.)
-        // TODO: Implement power source detection
+        // Check if it's a power source
+        if (state.getBlock().getName().equals("ExampleGroup:PowerSource") || state.getBlock().getTags().contains("power_source")) {
+            return MAX_SIGNAL_STRENGTH;
+        }
+        
         return 0;
     }
     
@@ -97,9 +109,14 @@ public class Wire {
      * Gets direct power from power sources (levers, buttons, etc.)
      */
     private int getDirectPower(World world, BlockPosition pos) {
-        // TODO: Check adjacent blocks for power sources
-        // This would check for buttons, levers, pressure plates, etc.
-        return 0;
+        int maxDirectPower = 0;
+        for (BlockPosition neighbor : getAdjacentPositions(pos)) {
+            BlockState state = world.getBlockState(neighbor);
+            if (state != null && state.getBlock().getTags().contains("direct_power")) {
+                maxDirectPower = MAX_SIGNAL_STRENGTH;
+            }
+        }
+        return maxDirectPower;
     }
     
     /**
@@ -142,23 +159,32 @@ public class Wire {
      * Checks if a block state is a wire block
      */
     private boolean isWireBlock(BlockState state) {
-        // TODO: Check if block type matches wire block ID
-        return state != null && state.getBlock().getName().equals("Wire");
+        return state != null && state.getBlock().getName().equals("ExampleGroup:Wire");
     }
     
     /**
      * Called when wire block is placed
      */
-    public void onBlockPlaced(World world, BlockPosition pos) {
-        LOGGER.atInfo().log("Wire placed at %s", pos);
-        setPowerLevel(world, pos, 0);
-        onNeighborUpdate(world, pos);
+    @EventHandler
+    public void onBlockPlaced(BlockPlaceEvent event) {
+        BlockPosition pos = event.getPosition();
+        World world = event.getWorld();
+        if (isWireBlock(world.getBlockState(pos))) {
+            LOGGER.atInfo().log("Wire placed at %s", pos);
+            setPowerLevel(world, pos, 0);
+            onNeighborUpdate(world, pos);
+        }
     }
     
     /**
      * Called when wire block is broken
      */
-    public void onBlockBroken(World world, BlockPosition pos) {
+    @EventHandler
+    public void onBlockBroken(BlockBreakEvent event) {
+        BlockPosition pos = event.getPosition();
+        World world = event.getWorld();
+        // Since the block is already broken, we can't check if it's a wire via state at pos
+        // but we can notify neighbors
         LOGGER.atInfo().log("Wire broken at %s", pos);
         // Notify neighbors that power source is gone
         for (BlockPosition neighbor : getAdjacentPositions(pos)) {
@@ -166,6 +192,18 @@ public class Wire {
             if (isWireBlock(state)) {
                 onNeighborUpdate(world, neighbor);
             }
+        }
+    }
+
+    /**
+     * Called when a block is updated (e.g., neighbor changed)
+     */
+    @EventHandler
+    public void onBlockUpdate(BlockUpdateEvent event) {
+        BlockPosition pos = event.getPosition();
+        World world = event.getWorld();
+        if (isWireBlock(world.getBlockState(pos))) {
+            onNeighborUpdate(world, pos);
         }
     }
     

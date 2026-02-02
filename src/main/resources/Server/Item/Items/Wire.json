@@ -3,7 +3,7 @@
     "Name": "server.items.Wire.name"
   },
   "ItemLevel": 100,
-  "Icon": "Icons/ItemsGenerated/Wire.png",
+  "Icon": "Icons/ItemsGenerated/Example_Block.png",
   "Categories": [
     "Blocks.Functional"
   ],
@@ -25,7 +25,7 @@
     "BlockParticleSetId": "Dust",
     "Textures": [
       {
-        "All": "BlockTextures/Wire.png",
+        "All": "BlockTextures/Example_Block.png",
         "Weight": 1
       }
     ],
@@ -38,6 +38,7 @@
       "Grass"
     ],
     "Properties": {
+      "power": 0,
       "SignalStrength": 15,
       "MaxSignalDistance": 15,
       "CanPowerBlocks": true,
