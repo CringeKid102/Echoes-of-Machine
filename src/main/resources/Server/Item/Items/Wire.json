@@ -10,7 +10,7 @@
   "PlayerAnimationsId": "Block",
   "Set": "Redstone",
   "BlockType": {
-    "Material": "NonSolid",
+    "Material": "Solid",
     "DrawType": "Wire",
     "Group": "Redstone",
     "Flags": {
