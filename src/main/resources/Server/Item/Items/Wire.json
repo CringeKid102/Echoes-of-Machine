@@ -11,7 +11,7 @@
   "Set": "Redstone",
   "BlockType": {
     "Material": "Solid",
-    "DrawType": "Wire",
+    "DrawType": "Cube",
     "Group": "Redstone",
     "Flags": {
       "IsConductive": true,
