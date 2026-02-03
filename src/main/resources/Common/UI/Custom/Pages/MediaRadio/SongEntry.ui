@@ -1,0 +1,59 @@
+$C = "../../Common.ui";
+
+Group {
+  LayoutMode: Left;
+  Background: $C.@InputBoxBackground;
+  FlexWeight: 1;
+  Padding: (Left: 10, Top: 8, Bottom: 8, Right: 8);
+  Anchor: (Height: 64);
+
+  AssetImage #Thumbnail {
+    Anchor: (Width: 44, Height: 44);
+  }
+
+  Group { Anchor: (Width: 10); }
+
+  Group {
+    LayoutMode: Top;
+    FlexWeight: 1;
+
+    Label #SongTitle {
+        Text: "%mediaRadio.customUI.songTitle";
+        Style: LabelStyle(
+            TextColor: #FFFFFF,
+            FontSize: 15,
+            RenderBold: true
+        );
+    }
+
+    Label #SongArtist {
+        Text: "%mediaRadio.customUI.artistName";
+        Style: LabelStyle(
+            TextColor: #C8C8C8,
+            FontSize: 12
+        );
+    }
+
+    Label #SongStatus {
+        Text: "";
+        Style: LabelStyle(
+            TextColor: #96a9be,
+            FontSize: 11
+        );
+    }
+  }
+
+  $C.@SmallSecondaryTextButton #PlayButton {
+      Text: %mediaRadio.customUI.play;
+      Anchor: (Width: 80);
+      Padding: (Horizontal: 8);
+  }
+
+  Group { Anchor: (Width: 6); }
+
+  $C.@SmallSecondaryTextButton #RemoveButton {
+      Text: %mediaRadio.customUI.remove;
+      Anchor: (Width: 90);
+      Padding: (Horizontal: 8);
+  }
+}

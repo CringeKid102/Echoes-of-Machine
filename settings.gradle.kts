@@ -13,3 +13,4 @@ plugins {
 }
 
 rootProject.name = "ExamplePlugin"
+include("media-tools")

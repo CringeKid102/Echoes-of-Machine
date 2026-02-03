@@ -1,0 +1,181 @@
+$C = "../../Common.ui";
+
+$C.@PageOverlay {}
+
+$C.@Container {
+    Anchor: (Width: 540, Height: 700);
+
+    #Title {
+        Group {
+            $C.@Title {
+               @Text = %mediaRadio.customUI.title;
+            }
+        }
+    }
+
+    #Content {
+        LayoutMode: Top;
+
+        Group #NowPlaying {
+            LayoutMode: Left;
+            Background: $C.@InputBoxBackground;
+            Padding: (Full: 12);
+            Anchor: (Height: 170);
+
+            AssetImage #NowPlayingThumb {
+                Anchor: (Width: 96, Height: 96);
+            }
+
+            Group { Anchor: (Width: 12); }
+
+            Group {
+                LayoutMode: Top;
+                FlexWeight: 1;
+
+                Label #NowPlayingTitle {
+                    Text: "%mediaRadio.customUI.notPlaying";
+                    Style: LabelStyle(
+                        TextColor: #FFFFFF,
+                        FontSize: 22,
+                        RenderBold: true
+                    );
+                }
+
+                Label #NowPlayingArtist {
+                    Text: "";
+                    Style: LabelStyle(
+                        TextColor: #C8C8C8,
+                        FontSize: 16
+                    );
+                }
+
+                Label #NowPlayingTime {
+                    Text: "0:00 / 0:00";
+                    Style: LabelStyle(
+                        TextColor: #96a9be,
+                        FontSize: 14
+                    );
+                }
+
+                FloatSlider #SeekSlider {
+                    Anchor: (Top: 8, Width: 380, Height: 6);
+                    Style: $C.@DefaultSliderStyle;
+                    Min: 0;
+                    Max: 100;
+                    Step: 1;
+                    Value: 0;
+                }
+
+                Group {
+                    LayoutMode: Left;
+                    Anchor: (Top: 14, Height: 22);
+
+                    Label #VolumeLabel {
+                        Text: "Volume %";
+                        Style: LabelStyle(
+                            TextColor: #96a9be,
+                            FontSize: 13
+                        );
+                        Anchor: (Width: 80);
+                    }
+
+                    $C.@TextField #VolumeInput {
+                        @Anchor = (Width: 62, Height: 20);
+                        PlaceholderText: "100";
+                    }
+
+                    Group { Anchor: (Width: 4); }
+
+                    $C.@SmallSecondaryTextButton #VolumeDown {
+                        Text: "-";
+                        Anchor: (Width: 26, Height: 20);
+                    }
+
+                    Group { Anchor: (Width: 4); }
+
+                    $C.@SmallSecondaryTextButton #VolumeUp {
+                        Text: "+";
+                        Anchor: (Width: 26, Height: 20);
+                    }
+                }
+
+                Group {
+                    LayoutMode: Left;
+                    Anchor: (Top: 6, Height: 14);
+
+                    Label #VolumeHint {
+                        Text: "Max 200%";
+                        Style: LabelStyle(
+                            TextColor: #6f8297,
+                            FontSize: 11
+                        );
+                    }
+                }
+            }
+        }
+
+        Group {
+            LayoutMode: Left;
+            Anchor: (Top: 12, Height: 36, Left: 4, Right: 4);
+
+            $C.@SmallSecondaryTextButton #PlayButton {
+                Text: %mediaRadio.customUI.play;
+                Anchor: (Width: 110);
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            $C.@SmallSecondaryTextButton #PauseButton {
+                Text: %mediaRadio.customUI.pause;
+                Anchor: (Width: 110);
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            $C.@SmallSecondaryTextButton #StopButton {
+                Text: %mediaRadio.customUI.stop;
+                Anchor: (Width: 110);
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            $C.@SmallSecondaryTextButton #LoopButton {
+                Text: %mediaRadio.customUI.loop;
+                Anchor: (Width: 120);
+                Padding: (Horizontal: 8);
+            }
+        }
+
+        $C.@TextField #UrlInput {
+            @Anchor = (Top: 8, Left: 4, Right: 4, Height: 34);
+            PlaceholderText: %mediaRadio.customUI.urlPlaceholder;
+        }
+
+        Label {
+            Text: "Library";
+            Style: LabelStyle(
+                TextColor: #8aa1b7,
+                FontSize: 14,
+                RenderBold: true
+            );
+        }
+
+        Group #LibraryList {
+            FlexWeight: 1;
+            LayoutMode: TopScrolling;
+            ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        }
+
+        Group {
+            LayoutMode: Left;
+            Anchor: (Top: 15);
+
+            $C.@TextButton #CancelButton {
+                Text: %mediaRadio.customUI.close;
+                FlexWeight: 1;
+            }
+        }
+    }
+}
+
+$C.@BackButton {}
