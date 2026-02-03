@@ -1,3 +1,5 @@
 items.Example_Block.name=Example Block
 items.Wire.name=Wire
 server.items.Radio.name=Radio
+server.items.Microphone.name=Microphone
+server.items.HandheldRadio.name=Handheld Radio

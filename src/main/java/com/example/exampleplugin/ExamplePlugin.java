@@ -7,7 +7,6 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 public class ExamplePlugin extends JavaPlugin {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private Wire wireBlock;
-    private Radio radioBlock;
 
     public ExamplePlugin(JavaPluginInit init) {
         super(init);
@@ -19,13 +18,16 @@ public class ExamplePlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
         
         // Initialize wire block handler
-        wireBlock = new Wire();
-        this.getEventManager().registerListener(wireBlock);
+        wireBlock = new Wire(this);
         LOGGER.atInfo().log("Wire block system initialized and listeners registered");
 
-        // Initialize radio block handler
-        radioBlock = new Radio();
-        this.getEventManager().registerListener(radioBlock);
-        LOGGER.atInfo().log("Radio block system initialized and listeners registered");
+        // Initialize Radio System
+        RadioSystem radioSystem = new RadioSystem(this);
+        
+        // Initialize Microphone System
+        MicrophoneSystem microphoneSystem = new MicrophoneSystem(this);
+        
+        // Initialize Handheld Radio System
+        HandheldRadioSystem handheldRadioSystem = new HandheldRadioSystem(this);
     }
 }
