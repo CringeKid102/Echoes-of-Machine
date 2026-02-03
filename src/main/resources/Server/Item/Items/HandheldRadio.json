@@ -1,0 +1,39 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HandheldRadio.name"
+  },
+  "ItemLevel": 100,
+  "Icon": "Icons/ItemsGenerated/Example_Block.png",
+  "Categories": [
+    "Tools.Utility"
+  ],
+  "PlayerAnimationsId": "Tool",
+  "Set": "Utility",
+  "Tags": {
+    "Type": [
+      "Utility",
+      "Electronic",
+      "Radio",
+      "Portable"
+    ]
+  },
+  "ItemSoundSetId": "ISS_Tools_Metal",
+  "IconProperties": {
+    "Scale": 0.58823,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      0,
+      -13.5
+    ]
+  },
+  "Properties": {
+    "frequency": 100,
+    "wavelength": 3,
+    "song": 0,
+    "isPortable": true
+  }
+}
